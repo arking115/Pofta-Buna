@@ -1,25 +1,19 @@
 import { atom } from "nanostores";
 import { CARDS_FETCH_API } from "../constants";
-import { ICardApi } from "../types/cards";
+import { IDashboardCardApi } from "../types/cards";
 
-export const cardStore = atom({
-    cards: [] as ICardApi[],
+export const cardsStore = atom({
+    cards: [] as IDashboardCardApi[],
     total: 0,
     loading: false,
-})
-
-// Astea sunt datele pentru display de carduri
-// endpoints
-// name
-// status
-// base
-
-// Astea sunt datele pentru display a unui card individual
-// ICardApi
-
+});
 
 export function setCardsLoading(value: boolean) {
-    cardStore.set({ ...cardStore.get(), loading: value });
+    cardsStore.set({ ...cardsStore.get(), loading: value });
+}
+
+export function getCardsLoading() {
+    return cardsStore.get().loading;
 }
 
 export const fetchCards = async () => {
@@ -30,15 +24,19 @@ export const fetchCards = async () => {
     return response;
 }
 
-export async function fetchAndSetCards() {
+export async function fetchAndSetCardsDashboard() {
     setCardsLoading(true);
 
-    const data = await fetchCards();
+    const response = await fetchCards();
+    const { cards } = response;
 
-    cardStore.set({
-        ...cardStore.get(),
-        cards: data.data,
-        total: data.total,
+    //count the cards set it to total
+    const total = cards.length;
+
+    cardsStore.set({
+        ...cardsStore.get(),
+        cards,
+        total,
     });
 
     setCardsLoading(false);

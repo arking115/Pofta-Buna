@@ -1,10 +1,10 @@
 import React from "react";
-import { fetchDataById } from "../stores/store-data";
+import { fetchAndSetCardsApps } from "../stores/store-data";
 import { useEffect } from "react";
 
-const useCardData = (id:string) => {
+const useCardData = () => {
     useEffect(() => {
-        fetchDataById(id);
+        fetchAndSetCardsApps();
     }, []);
 }
 

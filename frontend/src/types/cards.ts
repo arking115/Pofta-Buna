@@ -1,10 +1,20 @@
-export type ICardApi = {
+export type IDashboardCardApi = {
     cardId: number;
-    uID: string;
     name: string;
     refreshRate: number;
-    status: 'red' | 'green' | 'yellow';
+    statusApplication: 'red' | 'green' | 'yellow';
+    base: string;
+    endpoints: number;
 };
 
-export type ICardsApi = {
-    
+export type ICardAbstract = {
+    id: number[];
+    bugs: number;
+    uptime: number;
+    lastTime: string;
+}
+
+export type ICardSpecific = {
+    status: 'red' | 'green' | 'yellow';
+    port: string;
+}
