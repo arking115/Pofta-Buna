@@ -11,6 +11,10 @@
     "watch": "vite build --watch --emptyOutDir"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
+    "@mui/material": "^5.15.15",
+    "@mui/x-charts": "^7.1.1",
     "nanostores": "^0.10.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
