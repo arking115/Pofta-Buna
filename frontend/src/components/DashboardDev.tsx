@@ -7,6 +7,8 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Radio from '@mui/material/Radio';
 import { BarChart } from '@mui/x-charts/BarChart';
 import { axisClasses } from '@mui/x-charts/ChartsAxis';
+import Card from './Card';
+import { CardProps } from '@mui/material';
 
 type TickParamsSelectorProps = {
   tickPlacement: 'end' | 'start' | 'middle' | 'extremities';
@@ -24,10 +26,11 @@ function TickParamsSelector({
   setTickLabelPlacement,
 }: TickParamsSelectorProps) {
   return (
+    <div className='ml-12'>
     <Stack direction="column" justifyContent="space-between" sx={{ width: '100%' }}>
       <FormControl>
         <FormLabel id="tick-placement-radio-buttons-group-label">
-          tickPlacement
+          Tick Placement
         </FormLabel>
         <RadioGroup
           row
@@ -40,19 +43,19 @@ function TickParamsSelector({
             )
           }
         >
-          <FormControlLabel value="start" control={<Radio />} label="start" />
-          <FormControlLabel value="end" control={<Radio />} label="end" />
-          <FormControlLabel value="middle" control={<Radio />} label="middle" />
+          <FormControlLabel value="start"  control={<Radio sx={{ '& .MuiSvgIcon-root': { fontSize: '1rem' } }} />} label="start" />
+          <FormControlLabel value="end" control={<Radio sx={{ '& .MuiSvgIcon-root': { fontSize: '1rem' } }} />} label="end" />
+          <FormControlLabel value="middle" control={<Radio sx={{ '& .MuiSvgIcon-root': { fontSize: '1rem' } }} />} label="middle" />
           <FormControlLabel
             value="extremities"
-            control={<Radio />}
+            control={<Radio sx={{ '& .MuiSvgIcon-root': { fontSize: '1rem' } }} />}
             label="extremities"
           />
         </RadioGroup>
       </FormControl>
       <FormControl>
         <FormLabel id="label-placement-radio-buttons-group-label">
-          tickLabelPlacement
+          Tick Label Placement
         </FormLabel>
         <RadioGroup
           row
@@ -63,11 +66,12 @@ function TickParamsSelector({
             setTickLabelPlacement(event.target.value as 'tick' | 'middle')
           }
         >
-          <FormControlLabel value="tick" control={<Radio />} label="tick" />
-          <FormControlLabel value="middle" control={<Radio />} label="middle" />
+          <FormControlLabel value="tick" control={<Radio sx={{ '& .MuiSvgIcon-root': { fontSize: '1rem' } }} />} label="tick" />
+          <FormControlLabel value="middle" control={<Radio sx={{ '& .MuiSvgIcon-root': { fontSize: '1rem' } }} />} label="middle" />
         </RadioGroup>
       </FormControl>
     </Stack>
+    </div>
   );
 }
 
@@ -158,15 +162,29 @@ const dataset = [
   },
 ];
 
-const valueFormatter = (value: number | null) => `${value}mm`;
+const cardData = [
+    { name: 'Card 1', base: 'Base 1', endpoints: 3, status: 'green' },
+    { name: 'Card 2', base: 'Base 2', endpoints: 6, status: 'yellow' },
+    { name: 'Card 3', base: 'Base 3', endpoints: 1, status: 'red' },
+    { name: 'Card 3', base: 'Base 3', endpoints: 1, status: 'red' },
+    { name: 'Card 3', base: 'Base 3', endpoints: 1, status: 'red' },
+    { name: 'Card 3', base: 'Base 3', endpoints: 1, status: 'red' },
+    { name: 'Card 3', base: 'Base 3', endpoints: 1, status: 'red' },
+    { name: 'Card 3', base: 'Base 3', endpoints: 1, status: 'red' },
+    { name: 'Card 3', base: 'Base 3', endpoints: 1, status: 'red' },
+  ];
 
 const chartSetting = {
   yAxis: [
     {
-      label: 'rainfall (mm)',
+      label: 'applications',
     },
   ],
-  series: [{ dataKey: 'seoul', label: 'Seoul rainfall', valueFormatter }],
+  series: [
+    { dataKey: 'seoul', label: 'Stable', color: '#9C69EF' },
+    { dataKey: 'seoul', label: 'Unstable', color: '#9C27B0' },
+    { dataKey: 'seoul', label: 'Down', color: '#7B1FA2' },
+  ],  
   height: 300,
   sx: {
     [`& .${axisClasses.directionY} .${axisClasses.label}`]: {
@@ -184,20 +202,34 @@ export default function DashboardDev() {
   >('middle');
 
   return (
-    <div style={{ width: '100%' }}>
-      <TickParamsSelector
-        tickPlacement={tickPlacement}
-        tickLabelPlacement={tickLabelPlacement}
-        setTickPlacement={setTickPlacement}
-        setTickLabelPlacement={setTickLabelPlacement}
-      />
-      <BarChart
-        dataset={dataset}
-        xAxis={[
-          { scaleType: 'band', dataKey: 'month', tickPlacement, tickLabelPlacement },
-        ]}
-        {...chartSetting}
-      />
+    <div className='bg-gray-100 my-10'>
+        <div className='w-full flex justify-center'>
+            <div style={{ width: '80%' }} className='rounded-lg shadow-2xl p-8'>
+            <TickParamsSelector
+                tickPlacement={tickPlacement}
+                tickLabelPlacement={tickLabelPlacement}
+                setTickPlacement={setTickPlacement}
+                setTickLabelPlacement={setTickLabelPlacement}
+            />
+            <BarChart
+                dataset={dataset}
+                xAxis={[
+                { scaleType: 'band', dataKey: 'month', tickPlacement, tickLabelPlacement },
+                ]}
+                {...chartSetting}
+            />
+            </div>
+        </div>
+        
+        <div className='w-full flex justify-center mt-10'>
+            <div style={{ width: '80%' }} className='grid grid-cols-3 gap-10'>
+               {
+                cardData.map((card, index) => (
+                    <Card key={index} {...card} />
+                ))
+               }
+            </div>
+        </div>
     </div>
   );
 }
